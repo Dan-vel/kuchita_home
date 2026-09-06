@@ -1,0 +1,96 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Courier New', Courier, monospace; /* Toque tech */
+}
+
+body {
+    background-color: #0f172a; /* Azul muy oscuro */
+    color: #e2e8f0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Vital para que el botón No no genere scrollbars */
+}
+
+.container {
+    background: #1e293b;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+    border: 1px solid #334155;
+}
+
+.terminal-header {
+    text-align: left;
+    margin-bottom: 1.5rem;
+}
+
+.dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.red { background: #ef4444; }
+.yellow { background: #f59e0b; }
+.green { background: #10b981; }
+
+h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #38bdf8;
+}
+
+.subtitle {
+    font-size: 0.9rem;
+    color: #94a3b8;
+    margin-bottom: 2rem;
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    position: relative;
+    height: 50px; 
+}
+
+.btn {
+    padding: 10px 24px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.btn:active { transform: scale(0.95); }
+
+.yes {
+    background-color: #10b981;
+    color: white;
+}
+
+.no {
+    background-color: #ef4444;
+    color: white;
+    /* La transición hace que el movimiento se vea como una animación rápida */
+    transition: all 0.2s ease-out; 
+}
+
+.success-message {
+    color: #10b981;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-top: 1rem;
+    line-height: 1.6;
+}

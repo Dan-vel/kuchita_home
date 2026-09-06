@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <!-- Meta tag crucial para evitar que haga zoom accidental en el móvil -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Request: System Update</title>
+    <!-- Librería Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app" class="container">
+        <div class="terminal-header">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+        </div>
+        <div id="content">
+            <h1 class="typing-effect">¿Quieres ser mi enamorada?</h1>
+            <p class="subtitle">Requiere confirmación manual del usuario para proceder.</p>
+            
+            <div class="buttons-container">
+                <button id="btn-yes" class="btn yes">SÍ, ACEPTO</button>
+                <button id="btn-no" class="btn no">NO</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
