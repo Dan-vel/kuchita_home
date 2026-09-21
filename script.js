@@ -4,7 +4,7 @@
 let isUnlocked = false;
 let currentGameInterval = null;
 
-// Construcción del Girasol Hiper-Detallado
+// Construcción del Girasol Hiper-Detallado Animado Independientemente
 function drawDetailedPetals() {
   const container = document.getElementById('detailed-petals');
   if (!container) return;
@@ -14,25 +14,37 @@ function drawDetailedPetals() {
   // Capa 1: Atrás (Oscuros/Naranjas) - 24 pétalos
   for(let i=0; i<24; i++) {
     let angle = i * 15;
-    petalsHTML += `<path d="M0,0 C-22,-60 0,-125 0,-125 C0,-125 22,-60 0,0" fill="url(#petal-grad1)" transform="rotate(${angle}) scale(1)"/>`;
+    let delay = (Math.random() * 3).toFixed(2); 
+    petalsHTML += `
+      <g transform="rotate(${angle})">
+        <path d="M0,0 C-22,-60 0,-125 0,-125 C0,-125 22,-60 0,0" fill="url(#petal-grad1)" class="petal-anim" style="animation-delay: -${delay}s;"/>
+      </g>`;
   }
   
   // Capa 2: Medio (Amarillos dorados) - 24 pétalos
   for(let i=0; i<24; i++) {
     let angle = (i * 15) + 7.5;
-    petalsHTML += `<path d="M0,0 C-18,-50 0,-110 0,-110 C0,-110 18,-50 0,0" fill="url(#petal-grad2)" transform="rotate(${angle}) scale(1)"/>`;
+    let delay = (Math.random() * 3).toFixed(2);
+    petalsHTML += `
+      <g transform="rotate(${angle})">
+        <path d="M0,0 C-18,-50 0,-110 0,-110 C0,-110 18,-50 0,0" fill="url(#petal-grad2)" class="petal-anim" style="animation-delay: -${delay}s;"/>
+      </g>`;
   }
   
   // Capa 3: Frente (Amarillos brillantes) - 24 pétalos
   for(let i=0; i<24; i++) {
     let angle = (i * 15) + 3.75;
-    petalsHTML += `<path d="M0,0 C-15,-40 0,-95 0,-95 C0,-95 15,-40 0,0" fill="#FFEB3B" transform="rotate(${angle}) scale(1)"/>`;
+    let delay = (Math.random() * 3).toFixed(2);
+    petalsHTML += `
+      <g transform="rotate(${angle})">
+        <path d="M0,0 C-15,-40 0,-95 0,-95 C0,-95 15,-40 0,0" fill="#FFEB3B" class="petal-anim" style="animation-delay: -${delay}s;"/>
+      </g>`;
   }
   
   container.innerHTML = petalsHTML;
 }
 
-// Ejecutar al iniciar
+// Ejecutar al iniciar la página
 document.addEventListener("DOMContentLoaded", () => {
   drawDetailedPetals();
 });
@@ -320,7 +332,7 @@ function downloadHighResPNG() {
   });
 }
 
-// Descargar Archivo Animado SVG (Conservando todo el movimiento y diseño)
+// Descargar Archivo Animado SVG
 function downloadAnimatedSVG() {
   const btn = document.getElementById('btn-download-svg');
   const svgElement = document.getElementById('flower-svg-export');
@@ -329,19 +341,15 @@ function downloadAnimatedSVG() {
   btn.disabled = true;
 
   try {
-    // Clonamos el SVG para asegurarnos de que guarda el estado exacto (con los 72 pétalos de JS)
     const clone = svgElement.cloneNode(true);
     const serializer = new XMLSerializer();
     let source = serializer.serializeToString(clone);
 
-    // Aseguramos que tenga los atributos necesarios de un archivo SVG
     if (!source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)) {
       source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
     }
-    // Declaración XML
     source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
 
-    // Convertir a Data URI y Forzar Descarga
     const url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
     
     const link = document.createElement('a');
