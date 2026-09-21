@@ -4,34 +4,37 @@
 let isUnlocked = false;
 let currentGameInterval = null;
 
-// Construcción del Girasol Detallado (Se inyecta al cargar)
+// Construcción del Girasol Hiper-Detallado (72 pétalos en 3 capas)
 function drawDetailedPetals() {
   const container = document.getElementById('detailed-petals');
   if (!container) return;
   
   let petalsHTML = '';
-  // Capa 1: Grandes (Fondo)
-  for(let i=0; i<12; i++) {
-    let angle = i * 30;
-    petalsHTML += `<path d="M0,0 C-30,-60 0,-110 0,-110 C0,-110 30,-60 0,0" fill="url(#petal-grad1)" transform="rotate(${angle}) scale(1)"/>`;
+  
+  // Capa 1: Atrás (Oscuros/Naranjas) - 24 pétalos
+  for(let i=0; i<24; i++) {
+    let angle = i * 15;
+    petalsHTML += `<path d="M0,0 C-22,-60 0,-125 0,-125 C0,-125 22,-60 0,0" fill="url(#petal-grad1)" transform="rotate(${angle}) scale(1)"/>`;
   }
-  // Capa 2: Medianas (Medio)
-  for(let i=0; i<12; i++) {
-    let angle = (i * 30) + 15;
-    petalsHTML += `<path d="M0,0 C-25,-50 0,-95 0,-95 C0,-95 25,-50 0,0" fill="url(#petal-grad2)" transform="rotate(${angle}) scale(0.95)"/>`;
+  
+  // Capa 2: Medio (Amarillos dorados) - 24 pétalos
+  for(let i=0; i<24; i++) {
+    let angle = (i * 15) + 7.5;
+    petalsHTML += `<path d="M0,0 C-18,-50 0,-110 0,-110 C0,-110 18,-50 0,0" fill="url(#petal-grad2)" transform="rotate(${angle}) scale(1)"/>`;
   }
-  // Capa 3: Pequeñas (Frente)
-  for(let i=0; i<12; i++) {
-    let angle = (i * 30) + 7.5;
-    petalsHTML += `<path d="M0,0 C-20,-40 0,-75 0,-75 C0,-75 20,-40 0,0" fill="#FFC107" transform="rotate(${angle}) scale(0.85)"/>`;
+  
+  // Capa 3: Frente (Amarillos brillantes) - 24 pétalos
+  for(let i=0; i<24; i++) {
+    let angle = (i * 15) + 3.75;
+    petalsHTML += `<path d="M0,0 C-15,-40 0,-95 0,-95 C0,-95 15,-40 0,0" fill="#FFEB3B" transform="rotate(${angle}) scale(1)"/>`;
   }
+  
   container.innerHTML = petalsHTML;
 }
 
 // Ejecutar al iniciar
 document.addEventListener("DOMContentLoaded", () => {
   drawDetailedPetals();
-  checkDownloadStatus();
 });
 
 function navigate(pageId) {
@@ -53,7 +56,7 @@ function navigate(pageId) {
     document.getElementById('main-nav').classList.remove('hidden');
   }
 
-  // Ajustar tamaño del canvas al entrar a su página para evitar errores de renderizado
+  // Ajustar tamaño del canvas al entrar a su página
   if (pageId === 'page-minigame-catch') {
     resizeCanvas();
   }
@@ -124,7 +127,7 @@ function clearGarden() {
 }
 
 /* =========================================
-   4. MINIJUEGO: ATRAPA PÉTALOS (Mejorado para Touch)
+   4. MINIJUEGO: ATRAPA PÉTALOS (Touch/Mouse)
    ========================================= */
 const canvas = document.getElementById('catch-canvas');
 const ctx = canvas.getContext('2d');
@@ -136,10 +139,9 @@ let mouseX = 0;
 let timerInterval;
 
 function resizeCanvas() {
-  // Ajusta el canvas al tamaño del contenedor padre
-  canvas.width = canvas.parentElement.clientWidth - 40; // restando padding
-  canvas.height = 400; // altura fija razonable para cel y pc
-  mouseX = canvas.width / 2; // Iniciar en el centro
+  canvas.width = canvas.parentElement.clientWidth - 40; 
+  canvas.height = 400; 
+  mouseX = canvas.width / 2;
 }
 window.addEventListener('resize', () => { if(isPlayingCatch) resizeCanvas(); });
 
@@ -176,7 +178,7 @@ canvas.addEventListener('mousemove', (e) => {
 
 // Seguimiento del Dedo (Celular)
 canvas.addEventListener('touchmove', (e) => {
-  e.preventDefault(); // Evita que la pantalla haga scroll mientras juega
+  e.preventDefault(); 
   const rect = canvas.getBoundingClientRect();
   mouseX = e.touches[0].clientX - rect.left;
 }, { passive: false });
@@ -205,24 +207,21 @@ function gameLoop() {
   
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   
-  // Dibujar la Canasta (Rectángulo verde centrado en el mouse)
   ctx.fillStyle = '#16a34a';
   ctx.fillRect(mouseX - 40, canvas.height - 25, 80, 25);
   
-  // Agregar texto en la canasta
   ctx.fillStyle = 'white';
   ctx.font = '12px Arial';
   ctx.textAlign = 'center';
   ctx.fillText("Aquí", mouseX, canvas.height - 8);
   
-  if (Math.random() < 0.08) particles.push(new Petal()); // Dificultad ajustada
+  if (Math.random() < 0.08) particles.push(new Petal()); 
   
   for (let i = particles.length - 1; i >= 0; i--) {
     let p = particles[i];
     p.update();
     p.draw();
     
-    // Colisión mejorada
     if (p.y > canvas.height - 25 && p.x > mouseX - 40 && p.x < mouseX + 40) {
       score += 10;
       document.getElementById('score-catch').innerText = score;
@@ -312,30 +311,11 @@ function checkMatch() {
 initMemoryGame();
 
 /* =========================================
-   6. BLOQUEO Y DESCARGA HD DE LA FLOR
+   6. DESCARGA HD DE LA FLOR (Sin límite)
    ========================================= */
-const DOWNLOAD_KEY = 'kuchita_flower_downloaded_2026';
-
-function checkDownloadStatus() {
-  const isDownloaded = localStorage.getItem(DOWNLOAD_KEY);
-  const btn = document.getElementById('btn-download');
-  const warning = document.getElementById('download-warning');
-  
-  if (isDownloaded === 'true') {
-    btn.innerHTML = "<span>Ya guardaste este recuerdo 💛</span>";
-    btn.disabled = true;
-    warning.innerText = "Esta flor ya fue guardada en tu corazón (y en tu galería).";
-    warning.style.color = "#a7f3d0"; // Color verde suave indicando éxito
-  }
-}
-
 function downloadHighResArt() {
   const btn = document.getElementById('btn-download');
-  const warning = document.getElementById('download-warning');
   const targetElement = document.getElementById('art-to-download');
-  
-  // Verificación de seguridad extra
-  if(localStorage.getItem(DOWNLOAD_KEY) === 'true') return;
   
   btn.innerHTML = "<span>Preparando la foto... aguanta un ratito ⏳</span>";
   btn.style.opacity = "0.7";
@@ -358,13 +338,15 @@ function downloadHighResArt() {
     link.click();
     document.body.removeChild(link);
     
-    // GUARDAR EN LOCALSTORAGE PARA BLOQUEAR FUTURAS DESCARGAS
-    localStorage.setItem(DOWNLOAD_KEY, 'true');
-    
     btn.innerHTML = "<span>¡Lista! Revisa tus descargas 💛</span>";
     btn.style.opacity = "1";
-    warning.innerText = "¡Descargada con éxito! Esta flor ya es tuya para siempre.";
-    warning.style.color = "#a7f3d0";
+    
+    // El botón vuelve a la normalidad después de unos segundos
+    // para que pueda descargarla de nuevo si quiere
+    setTimeout(() => {
+      btn.innerHTML = "<span>Guardar foto en mi celular 📸</span>";
+      btn.disabled = false;
+    }, 4000);
     
   }).catch(err => {
     console.error("Error al descargar:", err);
