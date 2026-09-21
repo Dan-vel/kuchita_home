@@ -27,6 +27,7 @@ body {
 /* NAVEGACIÓN Y UTILIDADES */
 .hidden { display: none !important; }
 .active { display: flex !important; animation: fadeIn var(--transition-speed) ease-in-out; }
+.mt-15 { margin-top: 15px; }
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(15px); }
@@ -55,7 +56,7 @@ nav#main-nav {
 main#app-container { padding-top: 100px; min-height: 100vh; display: flex; justify-content: center; align-items: flex-start; width: 100%; padding-bottom: 50px;}
 .page { width: 100%; max-width: 1100px; padding: 20px; flex-direction: column; align-items: center; }
 
-/* COMPONENTES (BOTONES Y TARJETAS) */
+/* COMPONENTES */
 .glass-card {
   background: var(--glass-bg); backdrop-filter: blur(15px);
   border: 1px solid var(--glass-border); border-radius: 24px;
@@ -72,10 +73,11 @@ main#app-container { padding-top: 100px; min-height: 100vh; display: flex; justi
 .btn-primary:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(22, 163, 74, 0.5); }
 .btn-primary:disabled { background: #334155; color: #94a3b8; cursor: not-allowed; box-shadow: none; transform: none; }
 
-.btn-secondary { background: transparent; border: 2px solid var(--color-amarillo); color: var(--color-amarillo); }
-.btn-secondary:hover { background: var(--color-amarillo); color: var(--bg-darker); }
+.btn-secondary { background: rgba(0,0,0,0.3); border: 2px solid var(--color-amarillo); color: var(--color-amarillo); }
+.btn-secondary:hover:not(:disabled) { background: var(--color-amarillo); color: var(--bg-darker); }
+.btn-secondary:disabled { border-color: #475569; color: #94a3b8; cursor: not-allowed; }
 
-/* PÁGINA 1: LOGIN */
+/* LOGIN */
 .login-wrapper { display: flex; justify-content: center; width: 100%; margin-top: 5vh; }
 .login-card { width: 100%; max-width: 450px; padding: 40px 30px; }
 .login-header h2 { color: var(--color-amarillo); margin-bottom: 10px; font-size: 2rem; text-align: center;}
@@ -90,7 +92,7 @@ main#app-container { padding-top: 100px; min-height: 100vh; display: flex; justi
 .input-group input:focus { outline: none; border-color: var(--color-morado-light); background: rgba(0,0,0,0.4); }
 .error-msg { color: #f87171; text-align: center; margin-top: 15px; min-height: 20px; font-weight: bold; font-size: 0.9rem;}
 
-/* PÁGINA 2: DASHBOARD */
+/* DASHBOARD */
 .dashboard-container { width: 100%; }
 .dash-header { text-align: center; margin-bottom: 40px; }
 .dash-header h1 { font-size: 2.5rem; background: linear-gradient(to right, var(--color-morado-light), var(--color-verde-light)); -webkit-background-clip: text; color: transparent; }
@@ -102,7 +104,7 @@ main#app-container { padding-top: 100px; min-height: 100vh; display: flex; justi
 .dash-card p { font-size: 0.9rem; color: var(--text-muted); }
 .highlight-card { border-color: var(--color-amarillo); }
 
-/* PÁGINA 3: JARDÍN INTERACTIVO */
+/* JARDÍN INTERACTIVO */
 .garden-ui { text-align: center; width: 100%; max-width: 600px; margin-bottom: 20px; }
 .garden-ui h2 { color: var(--color-verde-light); }
 #interactive-garden-area {
@@ -113,7 +115,7 @@ main#app-container { padding-top: 100px; min-height: 100vh; display: flex; justi
 .garden-flower { position: absolute; width: 50px; height: 50px; transform: translate(-50%, -50%); animation: growFlower 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 @keyframes growFlower { 0% { transform: translate(-50%, -50%) scale(0); } 100% { transform: translate(-50%, -50%) scale(1); } }
 
-/* PÁGINA 4: MINIJUEGO CANVAS */
+/* CANVAS ATRAPA PÉTALOS */
 .game-ui { display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 800px; margin-bottom: 15px; gap: 15px;}
 .game-ui h2 { color: var(--color-amarillo); }
 .stats { display: flex; gap: 20px; }
@@ -125,7 +127,7 @@ main#app-container { padding-top: 100px; min-height: 100vh; display: flex; justi
   cursor: pointer; display: block; 
 }
 
-/* PÁGINA 5: MEMORIA */
+/* MEMORIA */
 .memory-ui { text-align: center; margin-bottom: 20px; }
 .memory-ui h2 { color: var(--color-morado-light); margin-bottom: 10px;}
 .memory-grid { 
@@ -146,7 +148,7 @@ main#app-container { padding-top: 100px; min-height: 100vh; display: flex; justi
 .memory-card .back { background: #1e293b; transform: rotateY(180deg); border: 2px solid var(--color-amarillo); }
 .victory-banner { background: var(--color-verde); padding: 20px; border-radius: 15px; margin-top: 20px; text-align: center; animation: pulse 2s infinite; }
 
-/* PÁGINA 6: DESCARGA HD */
+/* DESCARGA HD Y SVG */
 .gift-container { display: flex; flex-direction: column; align-items: center; width: 100%; text-align: center; }
 .art-frame {
   width: 100%; max-width: 550px; 
@@ -156,16 +158,14 @@ main#app-container { padding-top: 100px; min-height: 100vh; display: flex; justi
   display: flex; flex-direction: column; align-items: center; justify-content: center;
 }
 
-/* Ajuste del svg para que no se desborde al ser más alto por el tallo */
-.main-flower { width: 90%; height: auto; max-height: 400px; z-index: 2; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.6)); animation: floatSlow 6s ease-in-out infinite; }
-@keyframes floatSlow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+.main-flower { width: 90%; height: auto; max-height: 400px; z-index: 2; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.6)); }
 
 .art-watermark { margin-top: 25px; z-index: 2; }
 .watermark-title { font-family: 'Georgia', serif; font-size: 2rem; color: var(--color-amarillo); font-style: italic; }
 .watermark-date { font-size: 1rem; color: #cbd5e1; letter-spacing: 2px; margin: 5px 0; }
 .watermark-hash { font-family: monospace; font-size: 0.75rem; background: rgba(0,0,0,0.5); padding: 5px 15px; border-radius: 20px; color: var(--color-verde-light); display: inline-block; margin-top: 10px; border: 1px solid var(--color-morado); }
 
-.download-section { width: 100%; max-width: 450px; text-align: center; }
+.download-section { width: 100%; max-width: 450px; text-align: center; display: flex; flex-direction: column; gap: 10px;}
 .huge-btn { padding: 18px; border-radius: 50px; font-size: 1.15rem; }
 
 /* Ajustes Responsive */
