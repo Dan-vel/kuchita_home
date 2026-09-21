@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Para mi Kuchita - 21 de Septiembre</title>
+  <!-- Para que pueda guardar su flor como foto -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+
+  <!-- MENÚ DE NAVEGACIÓN -->
+  <nav id="main-nav" class="hidden">
+    <div class="nav-brand">21/09/2026 💛</div>
+    <ul class="nav-links">
+      <li><button onclick="navigate('page-dashboard')">Inicio</button></li>
+      <li><button onclick="navigate('page-garden')">Tu jardín</button></li>
+      <li><button onclick="navigate('page-minigame-catch')">Atrapar pétalos</button></li>
+      <li><button onclick="navigate('page-memory')">Memoria</button></li>
+      <li><button onclick="navigate('page-gift')" class="btn-highlight">Tu regalito</button></li>
+    </ul>
+  </nav>
+
+  <main id="app-container">
+    
+    <!-- PÁGINA 1: INICIO DE SESIÓN -->
+    <section id="page-login" class="page active">
+      <div class="login-wrapper">
+        <div class="glass-card login-card">
+          <div class="login-header">
+            <h2>¡Alto ahí! 🌻</h2>
+            <p>Antes de entrar, tengo que asegurarme de que de verdad eres mi Kuchita. Responde esto rapidito:</p>
+          </div>
+          <form id="login-form" onsubmit="event.preventDefault(); verifyLogin();">
+            <div class="input-group">
+              <label>1. ¿Cómo nos decimos de cariño?</label>
+              <input type="text" id="auth-apodo" autocomplete="off" placeholder="Escríbelo aquí...">
+            </div>
+            <div class="input-group">
+              <label>2. Dime mis dos colores favoritos:</label>
+              <input type="text" id="auth-colores" autocomplete="off" placeholder="Color 1 y Color 2">
+            </div>
+            <div class="input-group">
+              <label>3. ¿Cuál es la comida que más me gusta?</label>
+              <input type="text" id="auth-comida" autocomplete="off" placeholder="(Pista: lleva limón...)">
+            </div>
+            <div class="input-group">
+              <label>4. ¿Cuándo es mi cumpleaños?</label>
+              <input type="text" id="auth-cumple" autocomplete="off" placeholder="DD/MM/AAAA">
+            </div>
+            <button type="submit" class="btn-primary glow-effect">Ver mi sorpresa ✨</button>
+            <div id="login-error" class="error-msg"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- PÁGINA 2: DASHBOARD (Bienvenida) -->
+    <section id="page-dashboard" class="page hidden">
+      <div class="dashboard-container">
+        <header class="dash-header">
+          <h1>¡Hola, mi Kuchita! 💚💜</h1>
+          <p>Feliz 21 de septiembre. Quería darte tus flores amarillas de una forma diferente este año, así que te armé este rinconcito en internet solo para ti.</p>
+        </header>
+        <div class="dash-grid">
+          <div class="dash-card" onclick="navigate('page-garden')">
+            <div class="card-icon">🌱</div>
+            <h3>Tu propio jardín</h3>
+            <p>Toca la pantalla para ir plantando flores amarillas por donde tú quieras.</p>
+          </div>
+          <div class="dash-card" onclick="navigate('page-minigame-catch')">
+            <div class="card-icon">🍂</div>
+            <h3>Lluvia de pétalos</h3>
+            <p>A ver qué tan rápidos son tus reflejos... ¡trata de atrapar todos los que caen!</p>
+          </div>
+          <div class="dash-card" onclick="navigate('page-memory')">
+            <div class="card-icon">🧩</div>
+            <h3>Juego de memoria</h3>
+            <p>Encuentra los pares. Si ganas, te digo algo bonito al final.</p>
+          </div>
+          <div class="dash-card highlight-card" onclick="navigate('page-gift')">
+            <div class="card-icon">🎁</div>
+            <h3>Tu regalito principal</h3>
+            <p>Aquí está la flor que te hice, lista para que la guardes de recuerdo en tu cel.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PÁGINA 3: JARDÍN INTERACTIVO -->
+    <section id="page-garden" class="page hidden">
+      <div class="garden-ui">
+        <h2>Un jardín solo tuyo</h2>
+        <p>Haz clic o toca cualquier parte de la tierra oscura para que crezca una flor.</p>
+        <button class="btn-secondary" onclick="clearGarden()">Empezar de cero</button>
+      </div>
+      <div id="interactive-garden-area" onclick="plantFlower(event)">
+        <!-- Las flores se dibujan aquí -->
+      </div>
+    </section>
+
+    <!-- PÁGINA 4: MINIJUEGO ATRAPA PÉTALOS -->
+    <section id="page-minigame-catch" class="page hidden">
+      <div class="game-ui">
+        <h2>A ver esos reflejos 👀</h2>
+        <div class="stats">
+          <span>Puntos: <strong id="score-catch">0</strong></span>
+          <span>Tiempo: <strong id="time-catch">30</strong>s</span>
+        </div>
+        <button id="btn-start-catch" class="btn-primary" onclick="startCatchGame()">¡Empezar a jugar!</button>
+      </div>
+      <canvas id="catch-canvas"></canvas>
+    </section>
+
+    <!-- PÁGINA 5: MINIJUEGO MEMORIA -->
+    <section id="page-memory" class="page hidden">
+      <div class="memory-ui">
+        <h2>Memoria de elefante 🐘</h2>
+        <p>Busca las parejas de las cartitas escondidas.</p>
+        <span class="memory-moves">Tus intentos: <strong id="moves-count">0</strong></span>
+        <button class="btn-secondary" onclick="initMemoryGame()">Mezclar de nuevo</button>
+      </div>
+      <div id="memory-grid" class="memory-grid">
+        <!-- Tarjetas de memoria -->
+      </div>
+      <div id="memory-victory" class="hidden victory-banner">
+        <h3>¡Ganaste, amor! 🎉</h3>
+        <p>Tienes tan buena memoria... casi tan buena como un riquísimo plato de ceviche 🤤. ¡Te amo!</p>
+      </div>
+    </section>
+
+    <!-- PÁGINA 6: REGALO FINAL -->
+    <section id="page-gift" class="page hidden">
+      <div class="gift-container">
+        <h2>Tu flor amarilla de este año</h2>
+        <p>Hecha con mucho cariño especialmente para este 21 de septiembre.</p>
+        
+        <!-- CONTENEDOR PARA DESCARGA -->
+        <div id="art-to-download" class="art-frame">
+          <div class="art-background"></div>
+          <div class="svg-container">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="main-flower">
+              <defs>
+                <radialGradient id="sun-glow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#FFEB3B" stop-opacity="1"/>
+                  <stop offset="100%" stop-color="#F57F17" stop-opacity="0.2"/>
+                </radialGradient>
+              </defs>
+              <circle cx="100" cy="100" r="90" fill="url(#sun-glow)"/>
+              <g transform="translate(100,100)">
+                <path d="M0,0 C-20,-50 0,-80 0,-80 C0,-80 20,-50 0,0" fill="#FFC107" transform="rotate(0)"/>
+                <path d="M0,0 C-20,-50 0,-80 0,-80 C0,-80 20,-50 0,0" fill="#FFC107" transform="rotate(45)"/>
+                <path d="M0,0 C-20,-50 0,-80 0,-80 C0,-80 20,-50 0,0" fill="#FFC107" transform="rotate(90)"/>
+                <path d="M0,0 C-20,-50 0,-80 0,-80 C0,-80 20,-50 0,0" fill="#FFC107" transform="rotate(135)"/>
+                <path d="M0,0 C-20,-50 0,-80 0,-80 C0,-80 20,-50 0,0" fill="#FFC107" transform="rotate(180)"/>
+                <path d="M0,0 C-20,-50 0,-80 0,-80 C0,-80 20,-50 0,0" fill="#FFC107" transform="rotate(225)"/>
+                <path d="M0,0 C-20,-50 0,-80 0,-80 C0,-80 20,-50 0,0" fill="#FFC107" transform="rotate(270)"/>
+                <path d="M0,0 C-20,-50 0,-80 0,-80 C0,-80 20,-50 0,0" fill="#FFC107" transform="rotate(315)"/>
+                <path d="M0,0 C-15,-40 0,-65 0,-65 C0,-65 15,-40 0,0" fill="#FFCA28" transform="rotate(22.5)"/>
+                <path d="M0,0 C-15,-40 0,-65 0,-65 C0,-65 15,-40 0,0" fill="#FFCA28" transform="rotate(67.5)"/>
+                <path d="M0,0 C-15,-40 0,-65 0,-65 C0,-65 15,-40 0,0" fill="#FFCA28" transform="rotate(112.5)"/>
+                <path d="M0,0 C-15,-40 0,-65 0,-65 C0,-65 15,-40 0,0" fill="#FFCA28" transform="rotate(157.5)"/>
+                <path d="M0,0 C-15,-40 0,-65 0,-65 C0,-65 15,-40 0,0" fill="#FFCA28" transform="rotate(202.5)"/>
+                <path d="M0,0 C-15,-40 0,-65 0,-65 C0,-65 15,-40 0,0" fill="#FFCA28" transform="rotate(247.5)"/>
+                <path d="M0,0 C-15,-40 0,-65 0,-65 C0,-65 15,-40 0,0" fill="#FFCA28" transform="rotate(292.5)"/>
+                <path d="M0,0 C-15,-40 0,-65 0,-65 C0,-65 15,-40 0,0" fill="#FFCA28" transform="rotate(337.5)"/>
+                <circle cx="0" cy="0" r="25" fill="#4E342E"/>
+                <circle cx="0" cy="0" r="18" fill="#3E2723" stroke="#5D4037" stroke-width="2" stroke-dasharray="3,3"/>
+                <circle cx="0" cy="0" r="10" fill="#21120e"/>
+              </g>
+            </svg>
+          </div>
+          <div class="art-watermark">
+            <h3 class="watermark-title">Para mi hermosa Kuchita</h3>
+            <p class="watermark-date">21 de Septiembre, 2026</p>
+            <div class="watermark-hash">Recuerdo guardado con 💜 y 💚</div>
+          </div>
+        </div>
+
+        <button id="btn-download" onclick="downloadHighResArt()" class="btn-primary huge-btn">
+          <span>Guardar foto en mi celular 📸</span>
+        </button>
+      </div>
+    </section>
+
+  </main>
+</body>
+</html>
