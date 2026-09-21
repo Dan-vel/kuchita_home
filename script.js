@@ -4,7 +4,7 @@
 let isUnlocked = false;
 let currentGameInterval = null;
 
-// Construcción del Girasol Hiper-Detallado (72 pétalos en 3 capas)
+// Construcción del Girasol Hiper-Detallado
 function drawDetailedPetals() {
   const container = document.getElementById('detailed-petals');
   if (!container) return;
@@ -40,7 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
 function navigate(pageId) {
   if (!isUnlocked && pageId !== 'page-login') return; 
   
-  // Limpiar juegos al salir de la pestaña
   if (currentGameInterval) { cancelAnimationFrame(currentGameInterval); currentGameInterval = null; }
   
   document.querySelectorAll('.page').forEach(page => {
@@ -56,10 +55,7 @@ function navigate(pageId) {
     document.getElementById('main-nav').classList.remove('hidden');
   }
 
-  // Ajustar tamaño del canvas al entrar a su página
-  if (pageId === 'page-minigame-catch') {
-    resizeCanvas();
-  }
+  if (pageId === 'page-minigame-catch') resizeCanvas();
 }
 
 /* =========================================
@@ -97,7 +93,6 @@ function plantFlower(e) {
   const garden = document.getElementById('interactive-garden-area');
   const rect = garden.getBoundingClientRect();
   
-  // Soporte para touch o click
   const clientX = e.touches ? e.touches[0].clientX : e.clientX;
   const clientY = e.touches ? e.touches[0].clientY : e.clientY;
   
@@ -127,7 +122,7 @@ function clearGarden() {
 }
 
 /* =========================================
-   4. MINIJUEGO: ATRAPA PÉTALOS (Touch/Mouse)
+   4. MINIJUEGO: ATRAPA PÉTALOS
    ========================================= */
 const canvas = document.getElementById('catch-canvas');
 const ctx = canvas.getContext('2d');
@@ -154,10 +149,7 @@ class Petal {
     this.angle = Math.random() * Math.PI * 2;
     this.spin = (Math.random() - 0.5) * 0.1;
   }
-  update() {
-    this.y += this.speed;
-    this.angle += this.spin;
-  }
+  update() { this.y += this.speed; this.angle += this.spin; }
   draw() {
     ctx.save();
     ctx.translate(this.x, this.y);
@@ -170,13 +162,11 @@ class Petal {
   }
 }
 
-// Seguimiento del Mouse (PC)
 canvas.addEventListener('mousemove', (e) => {
   const rect = canvas.getBoundingClientRect();
   mouseX = e.clientX - rect.left;
 });
 
-// Seguimiento del Dedo (Celular)
 canvas.addEventListener('touchmove', (e) => {
   e.preventDefault(); 
   const rect = canvas.getBoundingClientRect();
@@ -204,12 +194,9 @@ function startCatchGame() {
 
 function gameLoop() {
   if (!isPlayingCatch) return;
-  
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  
   ctx.fillStyle = '#16a34a';
   ctx.fillRect(mouseX - 40, canvas.height - 25, 80, 25);
-  
   ctx.fillStyle = 'white';
   ctx.font = '12px Arial';
   ctx.textAlign = 'center';
@@ -221,7 +208,6 @@ function gameLoop() {
     let p = particles[i];
     p.update();
     p.draw();
-    
     if (p.y > canvas.height - 25 && p.x > mouseX - 40 && p.x < mouseX + 40) {
       score += 10;
       document.getElementById('score-catch').innerText = score;
@@ -230,7 +216,6 @@ function gameLoop() {
       particles.splice(i, 1);
     }
   }
-  
   currentGameInterval = requestAnimationFrame(gameLoop);
 }
 
@@ -270,10 +255,7 @@ function initMemoryGame() {
     card.className = 'memory-card';
     card.dataset.value = emoji;
     card.dataset.index = index;
-    card.innerHTML = `
-      <div class="front">?</div>
-      <div class="back">${emoji}</div>
-    `;
+    card.innerHTML = `<div class="front">?</div><div class="back">${emoji}</div>`;
     card.addEventListener('click', () => flipCard(card));
     grid.appendChild(card);
   });
@@ -281,10 +263,8 @@ function initMemoryGame() {
 
 function flipCard(card) {
   if (flippedCards.length >= 2 || card.classList.contains('flipped')) return;
-  
   card.classList.add('flipped');
   flippedCards.push(card);
-  
   if (flippedCards.length === 2) {
     moves++;
     document.getElementById('moves-count').innerText = moves;
@@ -311,46 +291,72 @@ function checkMatch() {
 initMemoryGame();
 
 /* =========================================
-   6. DESCARGA HD DE LA FLOR (Sin límite)
+   6. DESCARGAS (PNG y SVG Animado)
    ========================================= */
-function downloadHighResArt() {
-  const btn = document.getElementById('btn-download');
+
+// Descargar Foto Estática (Alta Resolución)
+function downloadHighResPNG() {
+  const btn = document.getElementById('btn-download-png');
   const targetElement = document.getElementById('art-to-download');
   
-  btn.innerHTML = "<span>Preparando la foto... aguanta un ratito ⏳</span>";
+  btn.innerHTML = "<span>Preparando foto... ⏳</span>";
   btn.style.opacity = "0.7";
   btn.disabled = true;
 
-  const options = {
-    scale: 4, 
-    useCORS: true,
-    backgroundColor: '#020617',
-    logging: false
-  };
-
-  html2canvas(targetElement, options).then(canvas => {
-    const imageData = canvas.toDataURL('image/png', 1.0);
-    
+  html2canvas(targetElement, { scale: 4, useCORS: true, backgroundColor: '#020617', logging: false }).then(canvas => {
     const link = document.createElement('a');
-    link.href = imageData;
-    link.download = `Flores-Kuchita-EdicionUnica.png`;
+    link.href = canvas.toDataURL('image/png', 1.0);
+    link.download = `Flores-Kuchita-Foto.png`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     
-    btn.innerHTML = "<span>¡Lista! Revisa tus descargas 💛</span>";
+    btn.innerHTML = "<span>¡Foto Guardada! 📸</span>";
     btn.style.opacity = "1";
-    
-    // El botón vuelve a la normalidad después de unos segundos
-    // para que pueda descargarla de nuevo si quiere
-    setTimeout(() => {
-      btn.innerHTML = "<span>Guardar foto en mi celular 📸</span>";
-      btn.disabled = false;
-    }, 4000);
-    
+    setTimeout(() => { btn.innerHTML = "<span>Guardar Foto HD (Fija) 📸</span>"; btn.disabled = false; }, 4000);
   }).catch(err => {
-    console.error("Error al descargar:", err);
-    btn.innerHTML = "<span>Uy, no quiso cargar. Intenta de nuevo.</span>";
+    btn.innerHTML = "<span>Error. Intenta de nuevo.</span>";
     btn.disabled = false;
   });
+}
+
+// Descargar Archivo Animado SVG (Conservando todo el movimiento y diseño)
+function downloadAnimatedSVG() {
+  const btn = document.getElementById('btn-download-svg');
+  const svgElement = document.getElementById('flower-svg-export');
+  
+  btn.innerHTML = "<span>Generando flor mágica... ✨</span>";
+  btn.disabled = true;
+
+  try {
+    // Clonamos el SVG para asegurarnos de que guarda el estado exacto (con los 72 pétalos de JS)
+    const clone = svgElement.cloneNode(true);
+    const serializer = new XMLSerializer();
+    let source = serializer.serializeToString(clone);
+
+    // Aseguramos que tenga los atributos necesarios de un archivo SVG
+    if (!source.match(/^<svg[^>]+xmlns="http\:\/\/www\.w3\.org\/2000\/svg"/)) {
+      source = source.replace(/^<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
+    }
+    // Declaración XML
+    source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
+
+    // Convertir a Data URI y Forzar Descarga
+    const url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
+    
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `Flor-Animada-Kuchita.svg`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    btn.innerHTML = "<span>¡Flor descargada! ✨</span>";
+    setTimeout(() => { btn.innerHTML = "<span>Descargar Flor Animada (Movimiento) ✨</span>"; btn.disabled = false; }, 4000);
+
+  } catch (err) {
+    console.error(err);
+    btn.innerHTML = "<span>Error al descargar.</span>";
+    btn.disabled = false;
+  }
 }
