@@ -30,24 +30,24 @@
       <div class="login-wrapper">
         <div class="glass-card login-card">
           <div class="login-header">
-            <h2>¡Alto ahí! 🌻</h2>
-            <p>Antes de entrar, tengo que asegurarme de que de verdad eres mi Kuchita. Responde esto rapidito:</p>
+            <h2>Espera niña de la papaya</h2>
+            <p>Antes de entrar, tengo que asegurarme de que eres tú.</p>
           </div>
           <form id="login-form" onsubmit="event.preventDefault(); verifyLogin();">
             <div class="input-group">
-              <label>1. ¿Cómo nos decimos de cariño?</label>
+              <label>1. ¿Cual es nuestro apodo?</label>
               <input type="text" id="auth-apodo" autocomplete="off" placeholder="Escríbelo aquí...">
             </div>
             <div class="input-group">
-              <label>2. Dime mis dos colores favoritos:</label>
+              <label>2. Mis 2 colores favoritos:</label>
               <input type="text" id="auth-colores" autocomplete="off" placeholder="Color 1 y Color 2">
             </div>
             <div class="input-group">
-              <label>3. ¿Cuál es la comida que más me gusta?</label>
+              <label>3. Mi plato favorito:</label>
               <input type="text" id="auth-comida" autocomplete="off" placeholder="(Pista: lleva limón...)">
             </div>
             <div class="input-group">
-              <label>4. ¿Cuándo es mi cumpleaños?</label>
+              <label>4. ¿Cuándo es mi cumple?</label>
               <input type="text" id="auth-cumple" autocomplete="off" placeholder="DD/MM/AAAA">
             </div>
             <button type="submit" class="btn-primary glow-effect">Ver mi sorpresa ✨</button>
@@ -61,8 +61,8 @@
     <section id="page-dashboard" class="page hidden">
       <div class="dashboard-container">
         <header class="dash-header">
-          <h1>¡Hola, mi Kuchita! 💚💜</h1>
-          <p>Feliz 21 de septiembre. Quería darte tus flores amarillas de una forma diferente este año, así que te armé este rinconcito en internet solo para ti.</p>
+          <h1>¡Bienvenida kuchita!</h1>
+          <p>Feliz 21 de septiembre. Quería regalarte esto de una forma diferente a la que se hace, así que armé este rincón en internet solo para ti.</p>
         </header>
         <div class="dash-grid">
           <div class="dash-card" onclick="navigate('page-garden')">
@@ -73,17 +73,17 @@
           <div class="dash-card" onclick="navigate('page-minigame-catch')">
             <div class="card-icon">🍂</div>
             <h3>Lluvia de pétalos</h3>
-            <p>A ver qué tan rápidos son tus reflejos... ¡trata de atrapar todos los que caen!</p>
+            <p>A ver qué tan rápidos son tus dedos de kucha... atrapa todos los que puedas.</p>
           </div>
           <div class="dash-card" onclick="navigate('page-memory')">
             <div class="card-icon">🧩</div>
             <h3>Juego de memoria</h3>
-            <p>Encuentra los pares. Si ganas, te digo algo bonito al final.</p>
+            <p>Encuentra los pares.</p>
           </div>
           <div class="dash-card highlight-card" onclick="navigate('page-gift')">
             <div class="card-icon">🎁</div>
-            <h3>Tu regalito principal</h3>
-            <p>Aquí está el girasol que te hice, listo para que lo guardes de recuerdo en tu cel.</p>
+            <h3>Delishiosha</h3>
+            <p>Para que lo guardes bb.</p>
           </div>
         </div>
       </div>
@@ -102,7 +102,7 @@
     <!-- PÁGINA 4: MINIJUEGO ATRAPA PÉTALOS -->
     <section id="page-minigame-catch" class="page hidden">
       <div class="game-ui">
-        <h2>A ver esos reflejos 👀</h2>
+        <h2>A ver esos reflejos de poto</h2>
         <div class="stats">
           <span>Puntos: <strong id="score-catch">0</strong></span>
           <span>Tiempo: <strong id="time-catch">30</strong>s</span>
@@ -115,23 +115,23 @@
     <!-- PÁGINA 5: MINIJUEGO MEMORIA -->
     <section id="page-memory" class="page hidden">
       <div class="memory-ui">
-        <h2>Memoria de elefante 🐘</h2>
-        <p>Busca las parejas de las cartitas escondidas.</p>
+        <h2>Memoria de kucha</h2>
+        <p>Busca las parejas de las cartas escondidas.</p>
         <span class="memory-moves">Tus intentos: <strong id="moves-count">0</strong></span>
         <button class="btn-secondary" onclick="initMemoryGame()">Mezclar de nuevo</button>
       </div>
       <div id="memory-grid" class="memory-grid"></div>
       <div id="memory-victory" class="hidden victory-banner">
-        <h3>¡Ganaste, amor! 🎉</h3>
-        <p>Tienes tan buena memoria... casi tan buena como un riquísimo plato de ceviche 🤤. ¡Te amo!</p>
+        <h3>Ganaste, bbi 🎉</h3>
+        <p>Tienes tan buena memoria pedacito de niña</p>
       </div>
     </section>
 
     <!-- PÁGINA 6: REGALO FINAL -->
     <section id="page-gift" class="page hidden">
       <div class="gift-container">
-        <h2>Tu flor amarilla de este año</h2>
-        <p>Hecha con mucho cariño y detalle especialmente para este 21 de septiembre.</p>
+        <h2>Tu flor amarilla virtual de este año</h2>
+        <p>Hecha con mucho cariño y detalle especialmente para este 21 de septiembre. (este será un repositorio solo para ti)</p>
         
         <!-- CONTENEDOR DE LA FLOR -->
         <div id="art-to-download" class="art-frame">
@@ -227,18 +227,18 @@
           <div class="art-watermark">
             <h3 class="watermark-title">Para mi hermosa Kuchita</h3>
             <p class="watermark-date">21 de Septiembre, 2026</p>
-            <div class="watermark-hash">Recuerdo guardado con 💜 y 💚</div>
+            <div class="watermark-hash">Recuerdo ÚNICA copia de guardado. </div>
           </div>
         </div>
 
         <!-- BOTONES DE DESCARGA -->
         <div class="download-section">
           <button id="btn-download-png" onclick="downloadHighResPNG()" class="btn-primary huge-btn">
-            <span>Guardar Foto HD (Fija) 📸</span>
+            <span>Guardar Imagen</span>
           </button>
           
           <button id="btn-download-svg" onclick="downloadAnimatedSVG()" class="btn-secondary mt-15">
-            <span>Descargar Flor Animada (Movimiento) ✨</span>
+            <span>Descargar Animación</span>
           </button>
         </div>
       </div>
