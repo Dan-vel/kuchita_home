@@ -83,7 +83,7 @@
           <div class="dash-card highlight-card" onclick="navigate('page-gift')">
             <div class="card-icon">🎁</div>
             <h3>Tu regalito principal</h3>
-            <p>Aquí está la flor que te hice, lista para que la guardes de recuerdo en tu cel.</p>
+            <p>Aquí está el girasol que te hice, listo para que lo guardes de recuerdo en tu cel.</p>
           </div>
         </div>
       </div>
@@ -111,7 +111,6 @@
         </div>
         <button id="btn-start-catch" class="btn-primary" onclick="startCatchGame()">¡Empezar a jugar!</button>
       </div>
-      <!-- touch-action: none es vital para que no se mueva la pantalla al jugar en celular -->
       <canvas id="catch-canvas" style="touch-action: none;"></canvas>
     </section>
 
@@ -142,54 +141,77 @@
         <div id="art-to-download" class="art-frame">
           <div class="art-background"></div>
           <div class="svg-container">
-            <!-- GIRASOL DETALLADO Y ÚNICO -->
-            <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" class="main-flower">
+            
+            <!-- GIRASOL HIPER-DETALLADO CON TALLO -->
+            <svg viewBox="0 0 350 450" xmlns="http://www.w3.org/2000/svg" class="main-flower">
               <defs>
                 <radialGradient id="sun-glow" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stop-color="#FFEB3B" stop-opacity="0.8"/>
+                  <stop offset="0%" stop-color="#FFEB3B" stop-opacity="0.6"/>
                   <stop offset="100%" stop-color="#F57F17" stop-opacity="0"/>
                 </radialGradient>
                 <linearGradient id="petal-grad1" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stop-color="#FFEA00"/>
-                  <stop offset="100%" stop-color="#FF9100"/>
+                  <stop offset="0%" stop-color="#FFD600"/>
+                  <stop offset="100%" stop-color="#E65100"/>
                 </linearGradient>
                 <linearGradient id="petal-grad2" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stop-color="#FFD600"/>
-                  <stop offset="100%" stop-color="#FF6D00"/>
+                  <stop offset="0%" stop-color="#FFFF00"/>
+                  <stop offset="100%" stop-color="#FF9100"/>
                 </linearGradient>
               </defs>
               
               <!-- Resplandor de fondo -->
-              <circle cx="150" cy="150" r="140" fill="url(#sun-glow)"/>
+              <circle cx="175" cy="140" r="160" fill="url(#sun-glow)"/>
               
-              <g transform="translate(150,150)">
-                <!-- Hojas verdes de fondo -->
-                <path d="M0,0 C-40,-50 -60,-20 -80,-10 C-50,10 -20,20 0,0" fill="#2E7D32" transform="rotate(45)"/>
-                <path d="M0,0 C-40,-50 -60,-20 -80,-10 C-50,10 -20,20 0,0" fill="#2E7D32" transform="rotate(225)"/>
-                <path d="M0,0 C-40,-50 -60,-20 -80,-10 C-50,10 -20,20 0,0" fill="#1B5E20" transform="rotate(135)"/>
+              <!-- TALLO Y HOJAS -->
+              <path d="M175,140 Q150,300 185,450" fill="none" stroke="#2E7D32" stroke-width="16" stroke-linecap="round"/>
+              
+              <!-- Hoja Izquierda -->
+              <path d="M165,250 C110,210 50,250 55,310 C80,310 140,290 162,265" fill="#1B5E20"/>
+              <!-- Nervadura Hoja Izquierda -->
+              <path d="M165,250 Q110,265 55,310" fill="none" stroke="#388E3C" stroke-width="2"/>
+              
+              <!-- Hoja Derecha -->
+              <path d="M178,320 C235,280 300,320 290,380 C265,390 200,360 182,335" fill="#2E7D32"/>
+              <!-- Nervadura Hoja Derecha -->
+              <path d="M178,320 Q240,335 290,380" fill="none" stroke="#1B5E20" stroke-width="2"/>
+              
+              <g transform="translate(175,140)">
+                <!-- Sépalos (Hojas traseras de la flor) -->
+                <path d="M0,0 L-30,-70 L-60,-20 Z" fill="#1B5E20" transform="rotate(20)"/>
+                <path d="M0,0 L-30,-70 L-60,-20 Z" fill="#1B5E20" transform="rotate(80)"/>
+                <path d="M0,0 L-30,-70 L-60,-20 Z" fill="#2E7D32" transform="rotate(140)"/>
+                <path d="M0,0 L-30,-70 L-60,-20 Z" fill="#1B5E20" transform="rotate(200)"/>
+                <path d="M0,0 L-30,-70 L-60,-20 Z" fill="#2E7D32" transform="rotate(260)"/>
+                <path d="M0,0 L-30,-70 L-60,-20 Z" fill="#1B5E20" transform="rotate(320)"/>
                 
-                <!-- Generación de 24 Pétalos en 3 capas usando JS (inyectado al cargar para ahorrar líneas y hacerlo simétrico) -->
+                <!-- 72 Pétalos inyectados por JS para máxima belleza -->
                 <g id="detailed-petals"></g>
 
-                <!-- Centro del Girasol Texturizado -->
-                <circle cx="0" cy="0" r="45" fill="#3E2723"/>
-                <circle cx="0" cy="0" r="40" fill="#4E342E"/>
-                <circle cx="0" cy="0" r="35" fill="#3E2723" stroke="#5D4037" stroke-width="4" stroke-dasharray="2,4"/>
-                <circle cx="0" cy="0" r="28" fill="#4E342E" stroke="#795548" stroke-width="3" stroke-dasharray="1,5"/>
-                <circle cx="0" cy="0" r="20" fill="#21120e"/>
-                <circle cx="0" cy="0" r="10" fill="#3E2723" stroke="#FFC107" stroke-width="1" stroke-dasharray="2,2" opacity="0.5"/>
+                <!-- CORAZÓN DEL GIRASOL (Semillas hiper-detalladas) -->
+                <!-- Base oscura -->
+                <circle cx="0" cy="0" r="55" fill="#3E2723"/>
+                <!-- Textura del borde (semillas amarillentas) -->
+                <circle cx="0" cy="0" r="50" fill="none" stroke="#F57F17" stroke-width="8" stroke-dasharray="3,5"/>
+                <circle cx="0" cy="0" r="44" fill="none" stroke="#FFB300" stroke-width="6" stroke-dasharray="2,6"/>
+                <!-- Textura interior (semillas oscuras) -->
+                <circle cx="0" cy="0" r="38" fill="#4E342E"/>
+                <circle cx="0" cy="0" r="33" fill="none" stroke="#21120E" stroke-width="5" stroke-dasharray="2,4"/>
+                <circle cx="0" cy="0" r="26" fill="none" stroke="#1E0C06" stroke-width="6" stroke-dasharray="2,5"/>
+                <circle cx="0" cy="0" r="18" fill="none" stroke="#3E2723" stroke-width="4" stroke-dasharray="1,4"/>
+                <!-- Centro profundo -->
+                <circle cx="0" cy="0" r="12" fill="#1A0A05"/>
               </g>
             </svg>
           </div>
+          
           <div class="art-watermark">
             <h3 class="watermark-title">Para mi hermosa Kuchita</h3>
             <p class="watermark-date">21 de Septiembre, 2026</p>
-            <div class="watermark-hash">Edición Única: 05112002-K-V-M</div>
+            <div class="watermark-hash">Recuerdo guardado con 💜 y 💚</div>
           </div>
         </div>
 
         <div class="download-section">
-          <p id="download-warning" class="warning-text">⚠️ Ojo: Esta foto es de edición limitada. Solo podrás descargarla una vez en la vida.</p>
           <button id="btn-download" onclick="downloadHighResArt()" class="btn-primary huge-btn">
             <span>Guardar foto en mi celular 📸</span>
           </button>
