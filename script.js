@@ -1,12 +1,43 @@
 /* =========================================
-   LÓGICA DE NAVEGACIÓN
+   1. SISTEMA DE ENRUTAMIENTO Y ESTADO
    ========================================= */
 let isUnlocked = false;
 let currentGameInterval = null;
 
+// Construcción del Girasol Detallado (Se inyecta al cargar)
+function drawDetailedPetals() {
+  const container = document.getElementById('detailed-petals');
+  if (!container) return;
+  
+  let petalsHTML = '';
+  // Capa 1: Grandes (Fondo)
+  for(let i=0; i<12; i++) {
+    let angle = i * 30;
+    petalsHTML += `<path d="M0,0 C-30,-60 0,-110 0,-110 C0,-110 30,-60 0,0" fill="url(#petal-grad1)" transform="rotate(${angle}) scale(1)"/>`;
+  }
+  // Capa 2: Medianas (Medio)
+  for(let i=0; i<12; i++) {
+    let angle = (i * 30) + 15;
+    petalsHTML += `<path d="M0,0 C-25,-50 0,-95 0,-95 C0,-95 25,-50 0,0" fill="url(#petal-grad2)" transform="rotate(${angle}) scale(0.95)"/>`;
+  }
+  // Capa 3: Pequeñas (Frente)
+  for(let i=0; i<12; i++) {
+    let angle = (i * 30) + 7.5;
+    petalsHTML += `<path d="M0,0 C-20,-40 0,-75 0,-75 C0,-75 20,-40 0,0" fill="#FFC107" transform="rotate(${angle}) scale(0.85)"/>`;
+  }
+  container.innerHTML = petalsHTML;
+}
+
+// Ejecutar al iniciar
+document.addEventListener("DOMContentLoaded", () => {
+  drawDetailedPetals();
+  checkDownloadStatus();
+});
+
 function navigate(pageId) {
   if (!isUnlocked && pageId !== 'page-login') return; 
   
+  // Limpiar juegos al salir de la pestaña
   if (currentGameInterval) { cancelAnimationFrame(currentGameInterval); currentGameInterval = null; }
   
   document.querySelectorAll('.page').forEach(page => {
@@ -21,10 +52,15 @@ function navigate(pageId) {
   if (pageId !== 'page-login') {
     document.getElementById('main-nav').classList.remove('hidden');
   }
+
+  // Ajustar tamaño del canvas al entrar a su página para evitar errores de renderizado
+  if (pageId === 'page-minigame-catch') {
+    resizeCanvas();
+  }
 }
 
 /* =========================================
-   LOGIN (Con respuestas amigables)
+   2. LOGIN AMIGABLE
    ========================================= */
 function verifyLogin() {
   const apodo = document.getElementById('auth-apodo').value.toLowerCase().trim();
@@ -36,16 +72,14 @@ function verifyLogin() {
   const isApodoValid = apodo.includes('kuchit'); 
   const isColoresValid = colores.includes('morado') && colores.includes('verde');
   const isComidaValid = comida.includes('ceviche');
-  const isCumpleValid = cumple === '05/11/2002' || cumple === '05-11-2002';
+  const isCumpleValid = cumple === '05/11/2002' || cumple === '05-11-2002' || cumple === '5/11/2002';
 
   if (isApodoValid && isColoresValid && isComidaValid && isCumpleValid) {
     isUnlocked = true;
     errorBox.innerText = "";
     navigate('page-dashboard');
   } else {
-    // Texto mucho más natural y casual
     errorBox.innerText = "Uy, algo pusiste mal amor jajaja. Fíjate bien y vuelve a intentar.";
-    
     const card = document.querySelector('.login-card');
     card.style.transform = "translateX(-10px)";
     setTimeout(() => card.style.transform = "translateX(10px)", 100);
@@ -54,13 +88,18 @@ function verifyLogin() {
 }
 
 /* =========================================
-   JARDÍN INTERACTIVO
+   3. JARDÍN INTERACTIVO
    ========================================= */
 function plantFlower(e) {
   const garden = document.getElementById('interactive-garden-area');
   const rect = garden.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
+  
+  // Soporte para touch o click
+  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+  const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+  
+  const x = clientX - rect.left;
+  const y = clientY - rect.top;
 
   const flower = document.createElement('div');
   flower.className = 'garden-flower';
@@ -85,7 +124,7 @@ function clearGarden() {
 }
 
 /* =========================================
-   ATRAPA PÉTALOS
+   4. MINIJUEGO: ATRAPA PÉTALOS (Mejorado para Touch)
    ========================================= */
 const canvas = document.getElementById('catch-canvas');
 const ctx = canvas.getContext('2d');
@@ -96,14 +135,19 @@ let isPlayingCatch = false;
 let mouseX = 0;
 let timerInterval;
 
-canvas.width = 800;
-canvas.height = 500;
+function resizeCanvas() {
+  // Ajusta el canvas al tamaño del contenedor padre
+  canvas.width = canvas.parentElement.clientWidth - 40; // restando padding
+  canvas.height = 400; // altura fija razonable para cel y pc
+  mouseX = canvas.width / 2; // Iniciar en el centro
+}
+window.addEventListener('resize', () => { if(isPlayingCatch) resizeCanvas(); });
 
 class Petal {
   constructor() {
     this.x = Math.random() * canvas.width;
     this.y = -20;
-    this.size = Math.random() * 10 + 10;
+    this.size = Math.random() * 8 + 8;
     this.speed = Math.random() * 3 + 2;
     this.angle = Math.random() * Math.PI * 2;
     this.spin = (Math.random() - 0.5) * 0.1;
@@ -116,7 +160,7 @@ class Petal {
     ctx.save();
     ctx.translate(this.x, this.y);
     ctx.rotate(this.angle);
-    ctx.fillStyle = '#facc15';
+    ctx.fillStyle = '#ffc107';
     ctx.beginPath();
     ctx.ellipse(0, 0, this.size, this.size / 2, 0, 0, Math.PI * 2);
     ctx.fill();
@@ -124,19 +168,28 @@ class Petal {
   }
 }
 
+// Seguimiento del Mouse (PC)
 canvas.addEventListener('mousemove', (e) => {
   const rect = canvas.getBoundingClientRect();
-  mouseX = (e.clientX - rect.left) * (canvas.width / rect.width);
+  mouseX = e.clientX - rect.left;
 });
+
+// Seguimiento del Dedo (Celular)
+canvas.addEventListener('touchmove', (e) => {
+  e.preventDefault(); // Evita que la pantalla haga scroll mientras juega
+  const rect = canvas.getBoundingClientRect();
+  mouseX = e.touches[0].clientX - rect.left;
+}, { passive: false });
 
 function startCatchGame() {
   if (isPlayingCatch) return;
+  resizeCanvas();
   isPlayingCatch = true;
   score = 0;
   gameTime = 30;
   particles = [];
   document.getElementById('score-catch').innerText = score;
-  document.getElementById('btn-start-catch').innerText = "¡Jugando! Corre...";
+  document.getElementById('btn-start-catch').innerText = "¡Corre, atrápalos!";
   
   timerInterval = setInterval(() => {
     gameTime--;
@@ -152,17 +205,25 @@ function gameLoop() {
   
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   
+  // Dibujar la Canasta (Rectángulo verde centrado en el mouse)
   ctx.fillStyle = '#16a34a';
-  ctx.fillRect(mouseX - 40, canvas.height - 20, 80, 20);
+  ctx.fillRect(mouseX - 40, canvas.height - 25, 80, 25);
   
-  if (Math.random() < 0.1) particles.push(new Petal());
+  // Agregar texto en la canasta
+  ctx.fillStyle = 'white';
+  ctx.font = '12px Arial';
+  ctx.textAlign = 'center';
+  ctx.fillText("Aquí", mouseX, canvas.height - 8);
+  
+  if (Math.random() < 0.08) particles.push(new Petal()); // Dificultad ajustada
   
   for (let i = particles.length - 1; i >= 0; i--) {
     let p = particles[i];
     p.update();
     p.draw();
     
-    if (p.y > canvas.height - 20 && p.x > mouseX - 40 && p.x < mouseX + 40) {
+    // Colisión mejorada
+    if (p.y > canvas.height - 25 && p.x > mouseX - 40 && p.x < mouseX + 40) {
       score += 10;
       document.getElementById('score-catch').innerText = score;
       particles.splice(i, 1);
@@ -177,17 +238,17 @@ function gameLoop() {
 function endGameCatch() {
   isPlayingCatch = false;
   clearInterval(timerInterval);
-  ctx.fillStyle = 'rgba(0,0,0,0.7)';
+  ctx.fillStyle = 'rgba(0,0,0,0.8)';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = '#facc15';
-  ctx.font = '30px Arial';
+  ctx.fillStyle = '#ffc107';
+  ctx.font = '22px Arial';
   ctx.textAlign = 'center';
-  ctx.fillText(`¡Se acabó el tiempo! Hiciste ${score} puntos ✨`, canvas.width/2, canvas.height/2);
+  ctx.fillText(`¡Tiempo! Hiciste ${score} puntos ✨`, canvas.width/2, canvas.height/2);
   document.getElementById('btn-start-catch').innerText = "Jugar otra vez";
 }
 
 /* =========================================
-   MEMORIA
+   5. JUEGO DE MEMORIA
    ========================================= */
 const memoryEmojis = ['🌻','🌼','🌞','🐝','🍯','🍋','🏵️','💛'];
 let memoryCards = [];
@@ -251,11 +312,30 @@ function checkMatch() {
 initMemoryGame();
 
 /* =========================================
-   BOTÓN DE DESCARGA DE LA FOTO
+   6. BLOQUEO Y DESCARGA HD DE LA FLOR
    ========================================= */
+const DOWNLOAD_KEY = 'kuchita_flower_downloaded_2026';
+
+function checkDownloadStatus() {
+  const isDownloaded = localStorage.getItem(DOWNLOAD_KEY);
+  const btn = document.getElementById('btn-download');
+  const warning = document.getElementById('download-warning');
+  
+  if (isDownloaded === 'true') {
+    btn.innerHTML = "<span>Ya guardaste este recuerdo 💛</span>";
+    btn.disabled = true;
+    warning.innerText = "Esta flor ya fue guardada en tu corazón (y en tu galería).";
+    warning.style.color = "#a7f3d0"; // Color verde suave indicando éxito
+  }
+}
+
 function downloadHighResArt() {
   const btn = document.getElementById('btn-download');
+  const warning = document.getElementById('download-warning');
   const targetElement = document.getElementById('art-to-download');
+  
+  // Verificación de seguridad extra
+  if(localStorage.getItem(DOWNLOAD_KEY) === 'true') return;
   
   btn.innerHTML = "<span>Preparando la foto... aguanta un ratito ⏳</span>";
   btn.style.opacity = "0.7";
@@ -273,20 +353,21 @@ function downloadHighResArt() {
     
     const link = document.createElement('a');
     link.href = imageData;
-    link.download = `Flores-Kuchita-21Sept.png`;
+    link.download = `Flores-Kuchita-EdicionUnica.png`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     
+    // GUARDAR EN LOCALSTORAGE PARA BLOQUEAR FUTURAS DESCARGAS
+    localStorage.setItem(DOWNLOAD_KEY, 'true');
+    
     btn.innerHTML = "<span>¡Lista! Revisa tus descargas 💛</span>";
     btn.style.opacity = "1";
+    warning.innerText = "¡Descargada con éxito! Esta flor ya es tuya para siempre.";
+    warning.style.color = "#a7f3d0";
     
-    setTimeout(() => {
-      btn.innerHTML = "<span>Guardar foto en mi celular 📸</span>";
-      btn.disabled = false;
-    }, 4000);
   }).catch(err => {
-    console.error("Error:", err);
+    console.error("Error al descargar:", err);
     btn.innerHTML = "<span>Uy, no quiso cargar. Intenta de nuevo.</span>";
     btn.disabled = false;
   });
