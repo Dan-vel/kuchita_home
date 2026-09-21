@@ -2,16 +2,11 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Para mi Kuchita - 21 de Septiembre</title>
   
-  <!-- Enlace corregido para Vercel -->
   <link rel="stylesheet" href="./style.css">
-
-  <!-- Para que pueda guardar su flor como foto -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  
-  <!-- Enlace corregido del script (defer ayuda a que cargue después del HTML) -->
   <script src="./script.js" defer></script>
 </head>
 <body>
@@ -98,8 +93,8 @@
     <section id="page-garden" class="page hidden">
       <div class="garden-ui">
         <h2>Un jardín solo tuyo</h2>
-        <p>Haz clic o toca cualquier parte de la tierra oscura para que crezca una flor.</p>
-        <button class="btn-secondary" onclick="clearGarden()">Empezar de cero</button>
+        <p>Toca cualquier parte de la tierra oscura para que crezca una flor.</p>
+        <button class="btn-secondary" onclick="clearGarden()">Limpiar jardín</button>
       </div>
       <div id="interactive-garden-area" onclick="plantFlower(event)">
         <!-- Las flores se dibujan aquí -->
@@ -116,7 +111,8 @@
         </div>
         <button id="btn-start-catch" class="btn-primary" onclick="startCatchGame()">¡Empezar a jugar!</button>
       </div>
-      <canvas id="catch-canvas"></canvas>
+      <!-- touch-action: none es vital para que no se mueva la pantalla al jugar en celular -->
+      <canvas id="catch-canvas" style="touch-action: none;"></canvas>
     </section>
 
     <!-- PÁGINA 5: MINIJUEGO MEMORIA -->
@@ -140,53 +136,64 @@
     <section id="page-gift" class="page hidden">
       <div class="gift-container">
         <h2>Tu flor amarilla de este año</h2>
-        <p>Hecha con mucho cariño especialmente para este 21 de septiembre.</p>
+        <p>Hecha con mucho cariño y detalle especialmente para este 21 de septiembre.</p>
         
         <!-- CONTENEDOR PARA DESCARGA -->
         <div id="art-to-download" class="art-frame">
           <div class="art-background"></div>
           <div class="svg-container">
-            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="main-flower">
+            <!-- GIRASOL DETALLADO Y ÚNICO -->
+            <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" class="main-flower">
               <defs>
                 <radialGradient id="sun-glow" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stop-color="#FFEB3B" stop-opacity="1"/>
-                  <stop offset="100%" stop-color="#F57F17" stop-opacity="0.2"/>
+                  <stop offset="0%" stop-color="#FFEB3B" stop-opacity="0.8"/>
+                  <stop offset="100%" stop-color="#F57F17" stop-opacity="0"/>
                 </radialGradient>
+                <linearGradient id="petal-grad1" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#FFEA00"/>
+                  <stop offset="100%" stop-color="#FF9100"/>
+                </linearGradient>
+                <linearGradient id="petal-grad2" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#FFD600"/>
+                  <stop offset="100%" stop-color="#FF6D00"/>
+                </linearGradient>
               </defs>
-              <circle cx="100" cy="100" r="90" fill="url(#sun-glow)"/>
-              <g transform="translate(100,100)">
-                <path d="M0,0 C-20,-50 0,-80 0,-80 C0,-80 20,-50 0,0" fill="#FFC107" transform="rotate(0)"/>
-                <path d="M0,0 C-20,-50 0,-80 0,-80 C0,-80 20,-50 0,0" fill="#FFC107" transform="rotate(45)"/>
-                <path d="M0,0 C-20,-50 0,-80 0,-80 C0,-80 20,-50 0,0" fill="#FFC107" transform="rotate(90)"/>
-                <path d="M0,0 C-20,-50 0,-80 0,-80 C0,-80 20,-50 0,0" fill="#FFC107" transform="rotate(135)"/>
-                <path d="M0,0 C-20,-50 0,-80 0,-80 C0,-80 20,-50 0,0" fill="#FFC107" transform="rotate(180)"/>
-                <path d="M0,0 C-20,-50 0,-80 0,-80 C0,-80 20,-50 0,0" fill="#FFC107" transform="rotate(225)"/>
-                <path d="M0,0 C-20,-50 0,-80 0,-80 C0,-80 20,-50 0,0" fill="#FFC107" transform="rotate(270)"/>
-                <path d="M0,0 C-20,-50 0,-80 0,-80 C0,-80 20,-50 0,0" fill="#FFC107" transform="rotate(315)"/>
-                <path d="M0,0 C-15,-40 0,-65 0,-65 C0,-65 15,-40 0,0" fill="#FFCA28" transform="rotate(22.5)"/>
-                <path d="M0,0 C-15,-40 0,-65 0,-65 C0,-65 15,-40 0,0" fill="#FFCA28" transform="rotate(67.5)"/>
-                <path d="M0,0 C-15,-40 0,-65 0,-65 C0,-65 15,-40 0,0" fill="#FFCA28" transform="rotate(112.5)"/>
-                <path d="M0,0 C-15,-40 0,-65 0,-65 C0,-65 15,-40 0,0" fill="#FFCA28" transform="rotate(157.5)"/>
-                <path d="M0,0 C-15,-40 0,-65 0,-65 C0,-65 15,-40 0,0" fill="#FFCA28" transform="rotate(202.5)"/>
-                <path d="M0,0 C-15,-40 0,-65 0,-65 C0,-65 15,-40 0,0" fill="#FFCA28" transform="rotate(247.5)"/>
-                <path d="M0,0 C-15,-40 0,-65 0,-65 C0,-65 15,-40 0,0" fill="#FFCA28" transform="rotate(292.5)"/>
-                <path d="M0,0 C-15,-40 0,-65 0,-65 C0,-65 15,-40 0,0" fill="#FFCA28" transform="rotate(337.5)"/>
-                <circle cx="0" cy="0" r="25" fill="#4E342E"/>
-                <circle cx="0" cy="0" r="18" fill="#3E2723" stroke="#5D4037" stroke-width="2" stroke-dasharray="3,3"/>
-                <circle cx="0" cy="0" r="10" fill="#21120e"/>
+              
+              <!-- Resplandor de fondo -->
+              <circle cx="150" cy="150" r="140" fill="url(#sun-glow)"/>
+              
+              <g transform="translate(150,150)">
+                <!-- Hojas verdes de fondo -->
+                <path d="M0,0 C-40,-50 -60,-20 -80,-10 C-50,10 -20,20 0,0" fill="#2E7D32" transform="rotate(45)"/>
+                <path d="M0,0 C-40,-50 -60,-20 -80,-10 C-50,10 -20,20 0,0" fill="#2E7D32" transform="rotate(225)"/>
+                <path d="M0,0 C-40,-50 -60,-20 -80,-10 C-50,10 -20,20 0,0" fill="#1B5E20" transform="rotate(135)"/>
+                
+                <!-- Generación de 24 Pétalos en 3 capas usando JS (inyectado al cargar para ahorrar líneas y hacerlo simétrico) -->
+                <g id="detailed-petals"></g>
+
+                <!-- Centro del Girasol Texturizado -->
+                <circle cx="0" cy="0" r="45" fill="#3E2723"/>
+                <circle cx="0" cy="0" r="40" fill="#4E342E"/>
+                <circle cx="0" cy="0" r="35" fill="#3E2723" stroke="#5D4037" stroke-width="4" stroke-dasharray="2,4"/>
+                <circle cx="0" cy="0" r="28" fill="#4E342E" stroke="#795548" stroke-width="3" stroke-dasharray="1,5"/>
+                <circle cx="0" cy="0" r="20" fill="#21120e"/>
+                <circle cx="0" cy="0" r="10" fill="#3E2723" stroke="#FFC107" stroke-width="1" stroke-dasharray="2,2" opacity="0.5"/>
               </g>
             </svg>
           </div>
           <div class="art-watermark">
             <h3 class="watermark-title">Para mi hermosa Kuchita</h3>
             <p class="watermark-date">21 de Septiembre, 2026</p>
-            <div class="watermark-hash">Recuerdo guardado con 💜 y 💚</div>
+            <div class="watermark-hash">Edición Única: 05112002-K-V-M</div>
           </div>
         </div>
 
-        <button id="btn-download" onclick="downloadHighResArt()" class="btn-primary huge-btn">
-          <span>Guardar foto en mi celular 📸</span>
-        </button>
+        <div class="download-section">
+          <p id="download-warning" class="warning-text">⚠️ Ojo: Esta foto es de edición limitada. Solo podrás descargarla una vez en la vida.</p>
+          <button id="btn-download" onclick="downloadHighResArt()" class="btn-primary huge-btn">
+            <span>Guardar foto en mi celular 📸</span>
+          </button>
+        </div>
       </div>
     </section>
 
