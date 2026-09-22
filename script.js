@@ -90,7 +90,7 @@ function verifyLogin() {
     errorBox.innerText = "";
     navigate('page-dashboard');
   } else {
-    errorBox.innerText = "Uy, algo pusiste mal amor jajaja. Fíjate bien y vuelve a intentar.";
+    errorBox.innerText = "Pusiste mal bbi. Fíjate bien y vuelve a intentar.";
     const card = document.querySelector('.login-card');
     card.style.transform = "translateX(-10px)";
     setTimeout(() => card.style.transform = "translateX(10px)", 100);
